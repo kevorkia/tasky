@@ -16,10 +16,10 @@ on:
         description: 'Container name'
         required: true
         default: 'tasky-demo'
-      WORKDIR:
-        description: 'WORKDIR / Container folder'
-        required: true
-        default: '/'
+#      WORKDIR:
+#        description: 'WORKDIR / Container folder'
+#        required: true
+#        default: '/'
 
 jobs:
   deploy:
@@ -49,11 +49,12 @@ jobs:
           ECR_REPOSITORY: ${{ github.event.inputs.ECR_REPOSITORY }}
           CONTAINER_NAME: ${{ github.event.inputs.CONTAINER_NAME }}
           IMAGE_TAG: ${{ github.sha }}
-          WORKDIR: ${{ github.event.inputs.WORKDIR }}
+ #         WORKDIR: ${{ github.event.inputs.WORKDIR }}
         run: |
           # Build a docker container
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$CONTAINER_NAME-$IMAGE_TAG "$WORKDIR"
-
+ #         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$CONTAINER_NAME-$IMAGE_TAG "$WORKDIR"
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$CONTAINER_NAME-$IMAGE_TAG
+          
       - name: Push image to Amazon ECR
         id: push-image
         env:
@@ -61,9 +62,8 @@ jobs:
           ECR_REPOSITORY: ${{ github.event.inputs.ECR_REPOSITORY }}
           CONTAINER_NAME: ${{ github.event.inputs.CONTAINER_NAME }}
           IMAGE_TAG: ${{ github.sha }}
-          WORKDIR: ${{ github.event.inputs.WORKDIR }}
+  #        WORKDIR: ${{ github.event.inputs.WORKDIR }}
         run: |
-          # push it to ECR so that it can
-          # be deployed to ECS.
+          # push it to ECR
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$CONTAINER_NAME-$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$CONTAINER_NAME-$IMAGE_TAG"
