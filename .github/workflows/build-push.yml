@@ -7,7 +7,7 @@ on:
       AWS_REGION:
         description: 'AWS Region of ECR'
         required: true
-        default: 'us-central-1'
+        default: 'eu-central-1'
       ECR_REPOSITORY:
         description: 'AWS ECR name'
         required: true
