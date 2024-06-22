@@ -52,9 +52,9 @@ jobs:
  #         WORKDIR: ${{ github.event.inputs.WORKDIR }}
         run: |
           # Build a docker container
- #         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$CONTAINER_NAME-$IMAGE_TAG "$WORKDIR"
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$CONTAINER_NAME-$IMAGE_TAG
-          
+          #docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$CONTAINER_NAME-$IMAGE_TAG "$WORKDIR"
+
       - name: Push image to Amazon ECR
         id: push-image
         env:
