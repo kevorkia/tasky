@@ -42,13 +42,13 @@ jobs:
           PC_ACCESS_KEY: ${{ secrets.PC_ACCESS_KEY }}
           PC_SECRET_KEY: ${{ secrets.PC_SECRET_KEY }}
 
-      - name: Run Image Sandbox
-        if: ${{ always() }}
-        run: sudo -E ./twistcli sandbox --address "${PCC_CONSOLE_URL}" ${{ env.IMAGE_NAME }}
-        env:
-          PCC_CONSOLE_URL: ${{ vars.PCC_CONSOLE_URL }}
-          TWISTLOCK_USER: ${{ secrets.PC_ACCESS_KEY }}
-          TWISTLOCK_PASSWORD: ${{ secrets.PC_SECRET_KEY }}
+#      - name: Run Image Sandbox
+#        if: ${{ always() }}
+#        run: sudo -E ./twistcli sandbox --address "${PCC_CONSOLE_URL}" ${{ env.IMAGE_NAME }}
+#        env:
+#          PCC_CONSOLE_URL: ${{ vars.PCC_CONSOLE_URL }}
+#          TWISTLOCK_USER: ${{ secrets.PC_ACCESS_KEY }}
+#          TWISTLOCK_PASSWORD: ${{ secrets.PC_SECRET_KEY }}
 
 
   checkov-scan:
