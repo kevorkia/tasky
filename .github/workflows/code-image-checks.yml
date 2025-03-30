@@ -31,12 +31,6 @@ jobs:
           pcc_pass: ${{ secrets.PC_SECRET_KEY }}
           image_name: ${{ env.IMAGE_NAME }}
 
-      - name: Upload SARIF report
-        uses: actions/upload-artifact@v2
-        if: ${{ always() }}
-        with:
-          name: SARIF results twistcli
-          path: ${{ steps.scan.outputs.sarif_file }}
 
       - name: Download Twistcli
         if: ${{ always() }}
@@ -88,11 +82,4 @@ jobs:
           PRISMA_API_URL: ${{ vars.PRISMA_API_URL }}
           BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
           REPOSITORY: ${{ github.repository }}
-
-      - name: Upload SARIF report
-        uses: actions/upload-artifact@v2
-        if: ${{ always() }}
-        with:
-          name: SARIF results image scan checkovcli
-          path: results.sarif
     
