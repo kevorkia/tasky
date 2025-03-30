@@ -32,15 +32,15 @@ jobs:
           image_name: ${{ env.IMAGE_NAME }}
 
 
-      - name: Download Twistcli
-        if: ${{ always() }}
-        run: |
-          chmod +x twistcli_download.sh
-          ./twistcli_download.sh
-        env:
-          PCC_URL: ${{ vars.PCC_CONSOLE_URL }}
-          PC_ACCESS_KEY: ${{ secrets.PC_ACCESS_KEY }}
-          PC_SECRET_KEY: ${{ secrets.PC_SECRET_KEY }}
+#      - name: Download Twistcli
+#        if: ${{ always() }}
+#        run: |
+#          chmod +x twistcli_download.sh
+#          ./twistcli_download.sh
+#        env:
+#          PCC_URL: ${{ vars.PCC_CONSOLE_URL }}
+#          PC_ACCESS_KEY: ${{ secrets.PC_ACCESS_KEY }}
+#          PC_SECRET_KEY: ${{ secrets.PC_SECRET_KEY }}
 
 #      - name: Run Image Sandbox
 #        if: ${{ always() }}
