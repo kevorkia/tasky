@@ -1,0 +1,44 @@
+name: Wiz image scan 
+on: [pull_request]
+  # Allows you to run this workflow manually from the Actions tab
+  
+ # workflow_dispatch:
+
+
+jobs:
+  build-and-scan-container:
+    name: Build, scan  image
+    runs-on: ubuntu-latest
+    env:
+      POLICY: "Default vulnerabilities policy"
+      SCAN_PATH: "." # Set the relative path in the repo to build the image from
+      TAG: "docker-tag" # Set the tag to use for the image
+    permissions:
+      actions: read
+      contents: read
+      security-events: write  # For SARIF
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v2
+
+      - name: Build the image
+        run: cd $SCAN_PATH && docker build . --tag $TAG # Configure to fit the params you use to build your image
+        
+      - name: Download Wiz CLI
+        run: curl -o wizcli https://downloads.wiz.io/wizcli/latest/wizcli-linux-amd64 && chmod +x wizcli
+        
+      - name: Authenticate to Wiz
+        run: ./wizcli auth --id "$WIZ_CLIENT_ID" --secret "$WIZ_CLIENT_SECRET"
+        env:
+          WIZ_CLIENT_ID: ${{ secrets.WIZ_CLIENT_ID }}
+          WIZ_CLIENT_SECRET: ${{ secrets.WIZ_CLIENT_SECRET }}
+          
+      - name: Run wiz-cli docker image scan
+        run: ./wizcli docker scan --image $TAG --policy "$POLICY"
+
+      - name: Fetch digest of Docker image for Graph enrichment
+        run: ./wizcli docker tag --image $TAG
+        continue-on-error: true
