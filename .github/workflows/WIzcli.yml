@@ -57,7 +57,7 @@ jobs:
         run: 
           curl -Lo wizcli https://downloads.wiz.io/v1/wizcli/latest/wizcli-linux-amd64
           chmod +x wizcli
-          ./wizcli scan container-image --image $TAG --policy "$POLICY"
-          ./wizcli tag --image $TAG  --digest ${{ steps.build-and-push.outputs.digest }}
+          ./wizcli scan container-image "tasky:$TAG" --policy "$POLICY"
+          ./wizcli tag "tasky:$TAG"  --digest ${{ steps.build-and-push.outputs.digest }}
         continue-on-error: true
 
