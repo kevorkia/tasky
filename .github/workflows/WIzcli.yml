@@ -10,9 +10,9 @@ jobs:
     name: Build, scan  image
     runs-on: ubuntu-latest
     env:
-      POLICY: "Default vulnerabilities policy"
+      POLICY: "georg.vuln"
       SCAN_PATH: "." # Set the relative path in the repo to build the image from
-      TAG: "docker-tag" # Set the tag to use for the image
+      TAG: "test-1" # Set the tag to use for the image
     permissions:
       actions: read
       contents: read
