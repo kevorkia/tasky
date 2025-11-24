@@ -28,8 +28,8 @@ jobs:
       - name: Build the image
         run: cd $SCAN_PATH && docker build . --tag $TAG # Configure to fit the params you use to build your image
         
-      - name: Download Wiz CLI
-        run: curl -o wizcli https://downloads.wiz.io/wizcli/latest/wizcli-linux-amd64 && chmod +x wizcli
+    #  - name: Download Wiz CLI
+     #   run: curl -o wizcli https://downloads.wiz.io/wizcli/latest/wizcli-linux-amd64 && chmod +x wizcli
         
      # - name: Authenticate to Wiz
       #  run: ./wizcli auth --id "$WIZ_CLIENT_ID" --secret "$WIZ_CLIENT_SECRET"
@@ -37,15 +37,27 @@ jobs:
       #    WIZ_CLIENT_ID: ${{ secrets.WIZ_CLIENT_ID }}
        #   WIZ_CLIENT_SECRET: ${{ secrets.WIZ_CLIENT_SECRET }}
           
-      - name: Run wiz-cli docker image scan
-        run: ./wizcli docker scan --image $TAG --policy "$POLICY"
-        env:
-          WIZ_CLIENT_ID: ${{ secrets.WIZ_CLIENT_ID }}
-          WIZ_CLIENT_SECRET: ${{ secrets.WIZ_CLIENT_SECRET }}
+      #- name: Run wiz-cli docker image scan
+       # run: ./wizcli docker scan --image $TAG --policy "$POLICY"
+        #env:
+         # WIZ_CLIENT_ID: ${{ secrets.WIZ_CLIENT_ID }}
+          # WIZ_CLIENT_SECRET: ${{ secrets.WIZ_CLIENT_SECRET }}
           
-      - name: Fetch digest of Docker image for Graph enrichment
-        run: ./wizcli docker tag --image $TAG
+     # - name: Fetch digest of Docker image for Graph enrichment
+      #  run: ./wizcli docker tag --image $TAG
+       # env:
+         # WIZ_CLIENT_ID: ${{ secrets.WIZ_CLIENT_ID }}
+        #  WIZ_CLIENT_SECRET: ${{ secrets.WIZ_CLIENT_SECRET }}
+        # continue-on-error: true
+
+      - name: Integrate CI data with Wiz
         env:
           WIZ_CLIENT_ID: ${{ secrets.WIZ_CLIENT_ID }}
           WIZ_CLIENT_SECRET: ${{ secrets.WIZ_CLIENT_SECRET }}
+        run: 
+          curl -Lo wizcli https://downloads.wiz.io/v1/wizcli/latest/wizcli-linux-amd64
+          chmod +x wizcli
+          ./wizcli scan container-image --image $TAG --policy "$POLICY"
+          ./wizcli tag --image $TAG  --digest ${{ steps.build-and-push.outputs.digest }}
         continue-on-error: true
+
