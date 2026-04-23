@@ -1,6 +1,6 @@
 # Building the binary of the App
 #test-2
-FROM golang:1.18 AS build
+FROM golang:1.19 AS build
 
 WORKDIR /go/src/tasky
 COPY . .
